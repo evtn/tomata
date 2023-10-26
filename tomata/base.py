@@ -1,5 +1,4 @@
 from __future__ import annotations
-from typing import Hashable
 
 from typing_extensions import (
     Any,
@@ -11,6 +10,8 @@ from typing_extensions import (
     TypeVar,
     Union,
     TypedDict,
+    Dict,
+    Hashable,
 )
 
 SK = TypeVar("SK", default=str)
@@ -22,8 +23,8 @@ HandlerType = Literal["event", "enter", "leave"]
 AsyncHandler = Callable[[Ev, Id, SK], Awaitable[Optional[SK]]]
 SyncHandler = Callable[[Ev, Id, SK], Optional[SK]]
 Handler = Union[SyncHandler[Ev, Id, SK], AsyncHandler[Ev, Id, SK]]
-SyncHandlerStore = dict[SK, SyncHandler[Ev, Id, SK]]
-AsyncHandlerStore = dict[SK, AsyncHandler[Ev, Id, SK]]
+SyncHandlerStore = Dict[SK, SyncHandler[Ev, Id, SK]]
+AsyncHandlerStore = Dict[SK, AsyncHandler[Ev, Id, SK]]
 
 K = TypeVar("K", bound=Hashable)
 H = TypeVar("H", bound=Handler[Any, Any, Any])

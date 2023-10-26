@@ -33,7 +33,7 @@ jobs:
         uses: abatilo/actions-poetry@v2
 
       - run: poetry install --with dev
-      - run: poetry run mypy tomata/*.py examples/*.py --disallow-any-expr
+      - run: poetry run pyright tomata/*.py examples/*.py
 
   run-tests:
     runs-on: ubuntu-latest
