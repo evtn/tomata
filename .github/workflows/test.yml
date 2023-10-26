@@ -16,6 +16,10 @@ jobs:
   check_types:
     runs-on: ubuntu-latest
     name: Check Types
+    strategy:
+      matrix:
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
+
     steps:
       - name: git-checkout
         uses: actions/checkout@v3
@@ -23,19 +27,19 @@ jobs:
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: "3.11"
+          python-version: "3.12"
 
       - name: Install Poetry
         uses: abatilo/actions-poetry@v2
 
       - run: poetry install --with dev
-      - run: poetry run mypy modulename/*.py --disallow-any-expr
+      - run: poetry run mypy tomata/*.py examples/*.py --disallow-any-expr
 
   run-tests:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        python-version: ["3.7", "3.8", "3.9", "3.10", "3.11"]
+        python-version: ["3.8", "3.9", "3.10", "3.11", "3.12"]
 
     name: Run Tests
     steps:
@@ -53,7 +57,7 @@ jobs:
       - run: poetry install --with dev
 
       - name: Test
-        run: poetry run coverage run --include "modulename/*" -m pytest test/
+        run: poetry run coverage run --include "tomata/*" -m pytest test/
 
       - name: Coveralls Update
         uses: coverallsapp/github-action@v2
