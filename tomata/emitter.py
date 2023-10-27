@@ -19,9 +19,9 @@ from .base import (
 class Emitter(BasicEmitter[Ev, SK, Id]):
     handlers: HandlersDict[SK, SyncHandler[Ev, Id, SK]]
 
-    @property
-    def on(self) -> On[Ev, SK, Id]:
-        return On(self)
+    def __init__(self, default_state: SK):
+        super().__init__(default_state)
+        self.on = On(self)
 
     def emit(self, event: Ev, identity: Id):
         current_state = self.get_state(identity)

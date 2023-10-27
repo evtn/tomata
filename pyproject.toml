@@ -1,6 +1,6 @@
 [tool.poetry]
 name = "tomata"
-version = "1.0.2"
+version = "1.0.3"
 description = ""
 authors = ["Dmitry Gritsenko <tomata@evtn.me>"]
 license = "MIT"
