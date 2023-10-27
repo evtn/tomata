@@ -42,9 +42,9 @@ def make_async(handler: Handler[Ev, Id, SK]) -> AsyncHandler[Ev, Id, SK]:
 class AsyncEmitter(BasicEmitter[Ev, SK, Id]):
     handlers: HandlersDict[SK, AsyncHandler[Ev, Id, SK]]
 
-    @property
-    def on(self) -> AsyncOn[Ev, SK, Id]:
-        return AsyncOn(self)
+    def __init__(self, default_state: SK):
+        super().__init__(default_state)
+        self.on = AsyncOn(self)
 
     async def emit(self, event: Ev, identity: Id):
         current_state = await self.get_state(identity)
@@ -112,7 +112,7 @@ class AsyncOn(Generic[Ev, SK, Id]):
         self.emitter = emitter
 
     def __call__(self, state: SK, handler_type: HandlerType = "event"):
-        def decorator(handler: Handler[Ev, Id, SK]):
+        def decorator(handler: Handler[Ev, Id, SK]) -> Handler[Ev, Id, SK]:
             self.emitter.set_handler(state, handler_type, handler)
             return handler
 
